@@ -1,0 +1,10 @@
+overwriteIndices: False
+downloadTarballs: True
+downloadFreemium: False
+parseFreemium: True
+downloadsDirPath: '/mnt/downloads'
+logsDirPath: '/mnt/logs'
+dataRegex: '**/*.tar.gz'
+xmlStructuresDirPath: '/mnt/xmlStructures/'
+databasePath: '/mnt/db.sqlite'
+baseURL: 'https://EDIT-THIS-BASEURL'

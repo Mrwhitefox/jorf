@@ -3,6 +3,23 @@
 Le code ci présent a pour but de collecter les données du Journal Officiel
 français, de les analyser et de les ajouter à une base de données.
 
+## Docker
+```
+docker build . -t jorf_rss
+```
+
+## Execution/mise a jour de la bdd
+```
+mkdir -p work/{downloads,logs,xmlstructures}
+docker run --rm -ti -v $(realpath work):/mnt jorf python /opt/jorf/config/docker.yml
+```
+
+## Execution de l'API web
+```
+cat config/docker.yml | sed 's/EDIT-THIS-BASEURL/www.hostname.com/' > config/my-docker.yml
+docker run -v $(realpath work/db.sqlite):/mnt/db.sqlite:ro -v $(realpath config/my-docker.yml):/opt/jorf/config/docker.yml:ro -p80:80 jorf
+```
+
 ## Installation
 
 Certaines dépendances Python sont requises pour exécuter les scripts de ce repo,
@@ -23,12 +40,6 @@ python3 main.py config/default.yml
 Cela aura pour effet de télécharger les données depuis le serveur FTP de la DILA
 (Direction de l'Information Légale et Administrative) et de peupler votre
 instance Elastic avec ces données.
-
-## Accessibilité des données
-
-Ce code sert en particulier à maintenir une instance ElasticSearch qui est
-accessible à l'adresse https://api.jo.parlement-ouvert.fr.
-Celle-ci est requêtable et vous pouvez disposer des données à votre guise.
 
 ## Utilitaires
 

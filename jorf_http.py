@@ -114,7 +114,7 @@ def parcoursJo(base_date, jo_elt, feed_items, rank):
         parcoursJo(base_date, child, feed_items, rank+1)
 
 
-@route('/rss/rss_today2.xml')
+@route('/rss/rss_today.xml')
 def rssLastJo():
     with orm.db_session:
         jo = orm.select(s for s in Summary).order_by(lambda: orm.desc(s.date))[:1][0]
@@ -156,4 +156,4 @@ if __name__ == '__main__':
     db.bind('sqlite', databasePath)
     db.generate_mapping()
     
-    run(host='0.0.0.0', port=2000, debug=True)
+    run(host='0.0.0.0', port=80, debug=True)
