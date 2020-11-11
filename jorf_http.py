@@ -38,13 +38,13 @@ def getJorfDate(date):
 
 @route('/jorf/<joid:re:JORFCONT[0-9]{12}>')
 def viewJorfId(joid):
-    return template('summary', base_url=base_url, jo=getJorfId(date))
+    return template('summary', base_url=base_url, jo=getJorfId(joid))
 
 
 def getJorfId(id_jo):
     with orm.db_session:
         jo = Summary[id_jo]
-    return json.loads(jo)
+    return json.loads(jo.data)
 
 @route('/texte/<idtexte:re:JORFTEXT[0-9]{12}>')
 def viewTexte(idtexte):
@@ -156,4 +156,4 @@ if __name__ == '__main__':
     db.bind('sqlite', databasePath)
     db.generate_mapping()
     
-    run(host='0.0.0.0', port=80, debug=True)
+    run(host='0.0.0.0', port=80, debug=False)
