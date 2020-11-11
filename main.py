@@ -88,6 +88,7 @@ if __name__ == '__main__':
         params['dataRegex']
     )
     logsDirPath = params['logsDirPath']
+    databasePath = params['databasePath']
 
     downloadsLogFile = os.path.join(logsDirPath, 'downloaded.txt')
     parsedLogFile = os.path.join(logsDirPath, 'parsed.txt')
@@ -114,7 +115,7 @@ if __name__ == '__main__':
         ftpClient.terminate()
 
     # 2. Init and create parsers
-    dbm = DatabaseManager(overwriteIndices=overwriteIndices, verbose=verbose)
+    dbm = DatabaseManager(overwriteIndices=overwriteIndices, sqliteFile=databasePath, verbose=verbose)
     dbm.initESIndexes()
 
     if overwriteIndices:

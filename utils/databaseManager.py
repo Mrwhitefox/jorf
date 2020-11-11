@@ -1,19 +1,30 @@
 import datetime
 import json
 import os
-from tqdm import tqdm
-from elasticsearch import Elasticsearch
+from pony import orm
+
+db = orm.Database()
+
+class Summary(db.Entity):
+    id = orm.PrimaryKey(str)
+    data = orm.Required(str)
+    date = orm.Required(datetime.date)
+
+class Article(db.Entity):
+    id = orm.PrimaryKey(str)
+    data = orm.Required(str)
+    date = orm.Required(datetime.date)
 
 
 class DatabaseManager:
     '''Populates local ElasticSearch database with JORF
     summaries and articles.'''
 
-    def __init__(self, overwriteIndices=False, verbose=False):
+    def __init__(self, overwriteIndices=False, sqliteFile="db.sqlite", verbose=False):
         '''Initiates database manager with a connexion to the
         local running ElasticSearch instance.'''
 
-        self.es = Elasticsearch()
+        db.bind(provider="sqlite", filename=sqliteFile, create_db=True)
         self.verbose = verbose
         if overwriteIndices:
             self.deleteIndices()
@@ -24,10 +35,18 @@ class DatabaseManager:
         if self.verbose:
             print('Deleting indices...')
 
-        self.es.indices.delete(index='summary', ignore=[400, 404])
-        self.es.indices.delete(index='article', ignore=[400, 404])
+        raise NotImplementedError("Delete the sqlite file instead")
+        #self.es.indices.delete(index='summary', ignore=[400, 404])
+        #self.es.indices.delete(index='article', ignore=[400, 404])
 
     def initESIndexes(self):
+        '''Creates indices in ES, as well as their respective mappings.'''
+
+        if self.verbose:
+            print('Creating indices...')
+        db.generate_mapping(create_tables=True)
+
+    def initESIndexes_backup(self):
         '''Creates indices in ES, as well as their respective mappings.'''
 
         if self.verbose:
@@ -107,14 +126,18 @@ class DatabaseManager:
 
     def addSummary(self, nodeData, documentId=None):
         try:
-            self.es.index(index='summary', doc_type='nodes', body=nodeData, id=documentId)
+            with orm.db_session:
+                datepubli = datetime.date.fromisoformat(json.loads(nodeData)['DATE_PUBLI'])
+                Summary(id=documentId, data=nodeData, date=datepubli)
         except Exception as e:
             with open('./logs.txt', 'a+') as logFile:
                 logFile.write('{} - {}'.format(str(datetime.datetime.now()), e))
 
     def addArticle(self, nodeData, documentId=None):
         try:
-            self.es.index(index='article', doc_type='nodes', body=nodeData, id=documentId)
+            with orm.db_session:
+                datepubli = datetime.date.fromisoformat(json.loads(nodeData)['DATE_PUBLI'])
+                Article(id=documentId, data=nodeData, date=datepubli)
         except Exception as e:
             with open('./logs.txt', 'a+') as logFile:
                 logFile.write('{} - {}'.format(str(datetime.datetime.now()), e))
