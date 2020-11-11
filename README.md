@@ -11,7 +11,7 @@ docker build . -t jorf_rss
 ## Execution/mise a jour de la bdd
 ```
 mkdir -p work/{downloads,logs,xmlstructures}
-docker run --rm -ti -v $(realpath work):/mnt jorf python /opt/jorf/config/docker.yml
+docker run --rm -ti -v $(realpath work):/mnt jorf python main.py /opt/jorf/config/docker.yml
 ```
 
 ## Execution de l'API web
