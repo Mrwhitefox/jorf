@@ -24,7 +24,7 @@ class Article(db.Entity):
 
 @route('/')
 def hello():
-    return "Hello world"
+    return template('index', base_url=base_url)
 
 @route('/jorf/<date:re:[0-9]{4}-[0-9]{2}-[0-9]{2}>')
 def viewJorfDate(date):
@@ -38,7 +38,7 @@ def getJorfDate(date):
 
 @route('/jorf/<joid:re:JORFCONT[0-9]{12}>')
 def viewJorfId(joid):
-    return template('summary', base_url=base_url, jo=getJorfDate(date))
+    return template('summary', base_url=base_url, jo=getJorfId(date))
 
 
 def getJorfId(id_jo):

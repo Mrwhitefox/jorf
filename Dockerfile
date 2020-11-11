@@ -13,4 +13,5 @@ ADD config/docker.yml /opt/jorf/config/docker.yml
 RUN pip install -r /opt/jorf/requirements.txt
 
 WORKDIR /opt/jorf/
+EXPOSE 80/tcp
 CMD [ "python", "/opt/jorf/jorf_http.py", "/opt/jorf/config/docker.yml" ]
