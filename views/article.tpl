@@ -1,4 +1,6 @@
-lien ELI : <a href="{{txt.get('ID_ELI', '')}}">{{txt.get('ID_ELI', '????')}}</a><br />
+% if txt.get('ID_ELI'):
+lien ELI : <a href="{{txt['ID_ELI']}}">{{txt['ID_ELI']}}</a><br />
+% end
 <h1>{{txt['TITREFULL']}}</h1>
 {{txt['ORIGINE_PUBLI']}}
 

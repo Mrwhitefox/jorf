@@ -106,6 +106,7 @@ def parcoursJo(base_date, jo_elt, feed_items, rank):
                 rfeed.Item(
                     title = link['titre'],
                     link = base_url + "/texte/"+link['idtxt'],
+                    guid = rfeed.Guid(base_url+"/texte/"+link['idtxt']),
                     pubDate = datetime.datetime(base_date.year, base_date.month, base_date.day, 1, 0, 0) - datetime.timedelta(minutes=len(feed_items)),
                     description = template('article', base_url=base_url, txt=txt)
                 )
@@ -127,6 +128,7 @@ def rssLastJo():
         title = jo['TITRE'],
         description = "Dernier JO publié",
         link = base_url+"/jorf/"+jo['ID'],
+        guid = rfeed.Guid(base_url+"/jorf/"+jo['ID']),
         pubDate = datetime.datetime(jo_date.year, jo_date.month, jo_date.day, 1, 0, 0),
         items = feed_items
         )
