@@ -91,7 +91,6 @@ def rssJo():
 def parcoursJo(base_date, jo_elt, feed_items, rank):
     if not jo_elt["links"]:
         #pas de liens, donc c'est un titre
-        print("-"*rank + jo_elt['name'])
         feed_items.append(
             rfeed.Item(
                 title = "-"*rank + jo_elt['name'],
@@ -101,7 +100,6 @@ def parcoursJo(base_date, jo_elt, feed_items, rank):
     else:
         for link in jo_elt['links']:
             txt = getTexte(link['idtxt'])
-            print(link['titre'])
             feed_items.append(
                 rfeed.Item(
                     title = link['titre'],
@@ -128,7 +126,6 @@ def rssLastJo():
         title = jo['TITRE'],
         description = "Dernier JO publié",
         link = base_url+"/jorf/"+jo['ID'],
-        guid = rfeed.Guid(base_url+"/jorf/"+jo['ID']),
         pubDate = datetime.datetime(jo_date.year, jo_date.month, jo_date.day, 1, 0, 0),
         items = feed_items
         )
@@ -159,3 +156,4 @@ if __name__ == '__main__':
     db.generate_mapping()
     
     run(host='0.0.0.0', port=80, debug=False)
+    #run(host='0.0.0.0', port=2000, debug=True)
