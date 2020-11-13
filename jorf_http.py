@@ -58,11 +58,6 @@ def getTexte(idTexte):
 @route('/rss/rss.xml')
 def rssJo():
     NOMBRE_JO = 100
-    last_year = datetime.date.today()
-    try :
-        last_year = last_year.replace(year = last_year.year - 1)
-    except ValueError:
-        last_year = last_year + (datetime.date(last_year.year - 1, 3, 1) - datetime.date(last_year.year, 3, 1))
 
     feed_items = []
     with orm.db_session:
